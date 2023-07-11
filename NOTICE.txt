@@ -1,4 +1,4 @@
-PDS Lasso Releasers (update licensing below per specific organization)
+PDS Lasso Releasers
 
 Copyright © 2023, California Institute of Technology ("Caltech").
 U.S. Government sponsorship acknowledged.
