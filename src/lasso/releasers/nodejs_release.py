@@ -2,7 +2,6 @@
 import json
 import os
 
-
 from .release import release_publication
 
 SNAPSHOT_TAG_SUFFIX = "-unstable"
