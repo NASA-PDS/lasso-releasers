@@ -112,7 +112,7 @@ class TextFileDetective(VersionDetective):
         """Detect the version."""
         version_file = self.locate_file(self.workspace)
         if version_file is not None:
-            with open(version_file, "r") as inp:
+            with open(version_file, "r", encoding="utf-8") as inp:
                 return inp.read().strip()
         else:
             return None
@@ -166,7 +166,7 @@ class _SetupDetective(VersionDetective):
         if not setupfile:
             return None
         expr = self.getregexp()
-        with open(setupfile, "r") as inp:
+        with open(setupfile, "r", encoding="utf-8") as inp:
             for line in inp:
                 match = expr.search(line)
                 if match:
@@ -234,10 +234,10 @@ def getversion(workspace=None):
         if version:
             # Validate it
             try:
-                versionobj = packaging.version.parse(version)
-                if not isinstance(versionobj, packaging.version.LegacyVersion):
-                    # A newer and therefore better version, so add it
-                    versions.add(version)
+                # In Python 3.13+, LegacyVersion is removed, so we just check if parsing succeeded
+                # All valid versions are now Version objects, not LegacyVersion
+                _ = packaging.version.parse(version)
+                versions.add(version)
             except packaging.version.InvalidVersion:
                 # Invalid, we won't add it
                 pass
