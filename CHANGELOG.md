@@ -1,8 +1,12 @@
 # Changelog
 
-## [release/1.0.1](https://github.com/NASA-PDS/lasso-releasers/tree/release/1.0.1) (2024-01-24)
+## [release/1.1.0](https://github.com/NASA-PDS/lasso-releasers/tree/release/1.1.0) (2025-08-12)
 
-[Full Changelog](https://github.com/NASA-PDS/lasso-releasers/compare/ed057b9a34d1955d1a00150853b56ac1b11a6c31...release/1.0.1)
+[Full Changelog](https://github.com/NASA-PDS/lasso-releasers/compare/v1.0.1...release/1.1.0)
+
+## [v1.0.1](https://github.com/NASA-PDS/lasso-releasers/tree/v1.0.1) (2024-03-04)
+
+[Full Changelog](https://github.com/NASA-PDS/lasso-releasers/compare/ed057b9a34d1955d1a00150853b56ac1b11a6c31...v1.0.1)
 
 **Other closed issues:**
 
