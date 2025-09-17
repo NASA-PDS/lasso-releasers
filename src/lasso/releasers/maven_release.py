@@ -12,6 +12,7 @@ SNAPSHOT_TAG_SUFFIX = "SNAPSHOT"
 _logger = logging.getLogger(__name__)
 
 _mime_types = {
+    ".gz": "application/gzip",
     ".tar.gz": "application/gzip",
     ".zip": "application/zip",
     ".jar": "application/java-archive",
