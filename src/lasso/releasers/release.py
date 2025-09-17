@@ -61,7 +61,8 @@ def create_release(repo, repo_name, branch_name, tag_name, tagger, upload_assets
         upload_assets(repo_name, tag_name, release)
 
     except github3.GitHubError as error:
-        _logger.error(error.errors)
+        print(f"‼️ Error creating release: {error}", file=sys.stderr)
+        print(error.errors, file=sys.stderr)
 
 
 def delete_snapshot_releases(_repo, suffix):
@@ -95,7 +96,8 @@ def create_snapshot_release(repo, repo_name, branch_name, tag_name, tagger, uplo
         upload_assets(repo_name, tag_name, release)
 
     except github3.exceptions.GitHubError as error:  # 💢
-        print(error.errors)
+        print(f"‼️ Error creating snapshot release: {error}", file=sys.stderr)
+        print(error.errors, file=sys.stderr)
 
 
 def release_publication(suffix, get_version, upload_assets, prefix="v"):
@@ -141,7 +143,6 @@ def release_publication(suffix, get_version, upload_assets, prefix="v"):
 
     gh = github3.login(token=token)
     repo = gh.repository(org, repo_name)
-
     delete_snapshot_releases(repo, suffix)
     if tag_name.endswith(suffix) or args.snapshot:
         if not tag_name.endswith(suffix):
