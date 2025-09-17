@@ -63,6 +63,7 @@ def create_release(repo, repo_name, branch_name, tag_name, tagger, upload_assets
     except github3.GitHubError as error:
         print(f"‼️ Error creating release: {error}", file=sys.stderr)
         print(error.errors, file=sys.stderr)
+        raise RuntimeError(f"‼️ Error creating release: {error}")
 
 
 def delete_snapshot_releases(_repo, suffix):
