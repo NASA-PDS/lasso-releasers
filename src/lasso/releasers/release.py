@@ -47,7 +47,12 @@ def create_release(repo, repo_name, branch_name, tag_name, tagger, upload_assets
 
     try:
         our_branch = repo.branch(branch_name)
+        print(
+            f"😱 START TO WORRY: Creating tag {tag_name} for branch {branch_name} with commit {our_branch.commit.sha}",
+            file=sys.stderr
+        )
         repo.create_tag(tag_name, "release", our_branch.commit.sha, "commit", tagger)
+        print("😮‍💨 END TO WORRY it worked", file=sys.stderr)
 
         # create the release
         release = repo.create_release(
