@@ -47,9 +47,17 @@ def create_release(repo, repo_name, branch_name, tag_name, tagger, upload_assets
 
     try:
         our_branch = repo.branch(branch_name)
+        _logger.info(
+            '🏷️ Attempting to create tag %s for branch %s with commmit %s',
+            tag_name, branch_name, our_branch.commit.sha
+        )
         repo.create_tag(tag_name, "release", our_branch.commit.sha, "commit", tagger)
+    except github3.GitHubError:
+        _logger.info('🏷️ GitHubError: tag %s probably already exists, probably created by Roundup, so continuing', tag_name)
 
+    try:
         # create the release
+        _logger.info('📀 Attempting to create release %s for branch %s', tag_name, branch_name)
         release = repo.create_release(
             tag_name,
             target_commitish=branch_name,
@@ -57,11 +65,12 @@ def create_release(repo, repo_name, branch_name, tag_name, tagger, upload_assets
             prerelease=False,
         )
 
-        _logger.info("upload assets")
+        _logger.info("⬆️ Uploading assets")
         upload_assets(repo_name, tag_name, release)
-
     except github3.GitHubError as error:
-        _logger.error(error.errors)
+        _logger.error('‼️ Error creating release or uploading assets: %s', error)
+        _logger.error('🔍 Errors: %r', error.errors)
+        raise
 
 
 def delete_snapshot_releases(_repo, suffix):
@@ -81,8 +90,13 @@ def create_snapshot_release(repo, repo_name, branch_name, tag_name, tagger, uplo
 
     try:
         our_branch = repo.branch(branch_name)
+        _logger.info('🏷️ Attempting to create tag %s for branch %s with commmit %s', tag_name, branch_name, our_branch.commit.sha)
         repo.create_tag(tag_name, "SNAPSHOT release", our_branch.commit.sha, "commit", tagger)
+    except github3.GitHubError:
+        _logger.info('🏷️ GitHubError: tag %s probably already exists, probably created by Roundup, so continuing', tag_name)
 
+    try:
+        _logger.info('📀 Attempting to create snapshot release %s for branch %s', tag_name, branch_name)
         # create the release
         release = repo.create_release(
             tag_name,
@@ -91,11 +105,13 @@ def create_snapshot_release(repo, repo_name, branch_name, tag_name, tagger, uplo
             prerelease=True,
         )
 
-        _logger.info("upload assets")
+        _logger.info("⬆️ Uploading snapshot assets")
         upload_assets(repo_name, tag_name, release)
 
     except github3.exceptions.GitHubError as error:  # 💢
-        print(error.errors)
+        _logger.error('‼️ Error creating snapshot release: %s', error)
+        _logger.error('🔍 Errors: %r', error.errors)
+        raise
 
 
 def release_publication(suffix, get_version, upload_assets, prefix="v"):
@@ -141,7 +157,6 @@ def release_publication(suffix, get_version, upload_assets, prefix="v"):
 
     gh = github3.login(token=token)
     repo = gh.repository(org, repo_name)
-
     delete_snapshot_releases(repo, suffix)
     if tag_name.endswith(suffix) or args.snapshot:
         if not tag_name.endswith(suffix):

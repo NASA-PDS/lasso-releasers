@@ -1,13 +1,22 @@
 """Maven release automation."""
 import fnmatch
-import os
-import sys
+import logging
+import os.path
 
 from lxml import etree
 
 from .release import release_publication
 
 SNAPSHOT_TAG_SUFFIX = "SNAPSHOT"
+
+_logger = logging.getLogger(__name__)
+
+_mime_types = {
+    ".gz": "application/gzip",
+    ".tar.gz": "application/gzip",
+    ".zip": "application/zip",
+    ".jar": "application/java-archive",
+}
 
 
 def maven_get_version(workspace=None):
@@ -21,21 +30,25 @@ def maven_get_version(workspace=None):
         namespaces={"pom": "http://maven.apache.org/POM/4.0.0"},
     )
     version = r[0].text
-    print(f"Yo yo maven gets version {version} from the pom", file=sys.stderr)
+    _logger.info("🔍 Maven gets version %s from the pom", version)
     return version
 
 
 def maven_upload_assets(repo_name, tag_name, release):
     """Upload packages produced by maven."""
-    print(f"Yo yo maven upload assets for {repo_name} and tag {tag_name}", file=sys.stderr)
+    _logger.info("🔍 Maven upload assets for %s and tag %s", repo_name, tag_name)
     # upload assets
-    assets = ["*-bin.tar.gz", "*-bin.zip", "*.jar"]
-    for dirname, _subdirs, files in os.walk(os.environ.get("GITHUB_WORKSPACE")):
+    assets_found = False
+    assets, workspace = ["*-bin.tar.gz", "*-bin.zip", "*.jar"], os.environ.get("GITHUB_WORKSPACE")
+    for dirname, _subdirs, files in os.walk(workspace):
         if dirname.endswith("target"):
             for extension in assets:
                 for filename in fnmatch.filter(files, extension):
+                    assets_found = True
                     with open(os.path.join(dirname, filename), "rb") as f_asset:
-                        release.upload_asset("application/tar+gzip", filename, f_asset)
+                        release.upload_asset(_mime_types[os.path.splitext(filename)[1]], filename, f_asset)
+    if not assets_found:
+        raise RuntimeError(f"‼️ No assets found in {workspace}! Aborting!")
 
 
 def main():
