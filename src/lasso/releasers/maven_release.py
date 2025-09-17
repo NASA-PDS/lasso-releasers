@@ -1,13 +1,15 @@
 """Maven release automation."""
 import fnmatch
+import logging
 import os.path
-import sys
 
 from lxml import etree
 
 from .release import release_publication
 
 SNAPSHOT_TAG_SUFFIX = "SNAPSHOT"
+
+_logger = logging.getLogger(__name__)
 
 _mime_types = {
     ".tar.gz": "application/gzip",
@@ -27,13 +29,13 @@ def maven_get_version(workspace=None):
         namespaces={"pom": "http://maven.apache.org/POM/4.0.0"},
     )
     version = r[0].text
-    print(f"Yo yo maven gets version {version} from the pom", file=sys.stderr)
+    _logger.info("🔍 Maven gets version %s from the pom", version)
     return version
 
 
 def maven_upload_assets(repo_name, tag_name, release):
     """Upload packages produced by maven."""
-    print(f"Yo yo maven upload assets for {repo_name} and tag {tag_name}", file=sys.stderr)
+    _logger.info("🔍 Maven upload assets for %s and tag %s", repo_name, tag_name)
     # upload assets
     assets_found = False
     assets, workspace = ["*-bin.tar.gz", "*-bin.zip", "*.jar"], os.environ.get("GITHUB_WORKSPACE")
