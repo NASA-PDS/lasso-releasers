@@ -43,7 +43,7 @@ def create_release(repo, repo_name, branch_name, tag_name, tagger, upload_assets
 
     Push the assets created in target directory.
     """
-    _logger.info("create new release")
+    _logger.info("🧐 create new release, repo_name: %s, branch_name: %s, tag_name: %s", repo_name, branch_name, tag_name)
 
     try:
         our_branch = repo.branch(branch_name)
@@ -57,14 +57,12 @@ def create_release(repo, repo_name, branch_name, tag_name, tagger, upload_assets
 
     try:
         # create the release
-        _logger.info('📀 Attempting to create release %s for branch %s', tag_name, branch_name)
+        _logger.info("𝌚 Creating release %s from tag %s", tag_name, tag_name)
         release = repo.create_release(
             tag_name,
-            target_commitish=branch_name,
             name=repo_name + " " + tag_name,
             prerelease=False,
         )
-
         _logger.info("⬆️ Uploading assets")
         upload_assets(repo_name, tag_name, release)
     except github3.GitHubError as error:
