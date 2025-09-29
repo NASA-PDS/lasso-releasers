@@ -1,8 +1,16 @@
 # Changelog
 
-## [release/1.2.0](https://github.com/NASA-PDS/lasso-releasers/tree/release/1.2.0) (2025-09-17)
+## [«unknown»](https://github.com/NASA-PDS/lasso-releasers/tree/«unknown») (2025-09-29)
 
-[Full Changelog](https://github.com/NASA-PDS/lasso-releasers/compare/v1.1.0...release/1.2.0)
+[Full Changelog](https://github.com/NASA-PDS/lasso-releasers/compare/v1.2.0...«unknown»)
+
+**Defects:**
+
+- Stable releases of ds-view are not publishing releases or their assets [\#5](https://github.com/NASA-PDS/lasso-releasers/issues/5) [[s.high](https://github.com/NASA-PDS/lasso-releasers/labels/s.high)]
+
+## [v1.2.0](https://github.com/NASA-PDS/lasso-releasers/tree/v1.2.0) (2025-09-17)
+
+[Full Changelog](https://github.com/NASA-PDS/lasso-releasers/compare/v1.1.0...v1.2.0)
 
 ## [v1.1.0](https://github.com/NASA-PDS/lasso-releasers/tree/v1.1.0) (2025-09-03)
 
