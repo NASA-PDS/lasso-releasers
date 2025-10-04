@@ -46,6 +46,7 @@ pip-selfcheck.json
 
 # Python testing artifacts
 .coverage
+coverage.xml
 htmlcov
 .tox/
 
@@ -104,3 +105,6 @@ typescript
 !.gitattributes
 !.gitignore
 !.gitkeep
+
+# Project-specific
+tests/releases/data/target/
